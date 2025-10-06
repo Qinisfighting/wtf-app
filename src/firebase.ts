@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
-  setPersistence,
-  browserLocalPersistence,
-  signInAnonymously,
-  type UserCredential,
+  //   setPersistence,
+  //   browserLocalPersistence,
+  //   signInAnonymously,
+  //   type UserCredential,
 } from "firebase/auth";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -38,12 +38,12 @@ export async function fetchPhotos() {
 }
 
 // ✅ Ensure persistence + (anon) auth is ready BEFORE any reads
-const authReady: Promise<UserCredential | void> = setPersistence(
-  auth,
-  browserLocalPersistence
-)
-  .then(() => (auth.currentUser ? undefined : signInAnonymously(auth)))
-  .catch((err) => {
-    // If your rules allow public reads, you can ignore; otherwise this will cause reads to fail.
-    console.error("[firebase] Auth init failed:", err);
-  });
+// const authReady: Promise<UserCredential | void> = setPersistence(
+//   auth,
+//   browserLocalPersistence
+// )
+//   .then(() => (auth.currentUser ? undefined : signInAnonymously(auth)))
+//   .catch((err) => {
+//     // If your rules allow public reads, you can ignore; otherwise this will cause reads to fail.
+//     console.error("[firebase] Auth init failed:", err);
+//   });
