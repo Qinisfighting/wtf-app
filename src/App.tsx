@@ -1,7 +1,7 @@
 // src/App.tsx
 import "./App.css";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import PhotoWall from "./components/PhotoWall";
@@ -22,16 +22,12 @@ function MainArea() {
 
   if (!user) return <Login />;
 
-  // Authenticated view: show Logout + Upload + PhotoWall
   return (
-    <div className="px-2 w-[330px]">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-end mb-4 mr-8">
-          <Logout />
-        </div>
+    <div className="m-auto px-2 w-full">
+      <div className="m-auto flex flex-col justify-center items-center gap-3">
         <Upload />
-        <PhotoWall />
       </div>
+      <PhotoWall />
     </div>
   );
 }
@@ -44,7 +40,8 @@ export default function App() {
         <main className="flex justify-center items-center py-8">
           <MainArea />
         </main>
-        <Footer />
+        <Logout />
+        {/* <Footer /> */}
       </div>
     </AuthProvider>
   );

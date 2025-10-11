@@ -32,7 +32,7 @@ export default function Login() {
   }
 
   return (
-    <div className="px-12 mx-auto w-full lg:w-1/2">
+    <div className="px-12 mx-auto w-full lg:w-[1/2]">
       <h2 className="text-xl font-bold mb-6 whitespace-normal text-center m-auto">
         Are you one of the crazy{" "}
         <span className="text-[#F74211] text-3xl">Q</span>s? prove it...

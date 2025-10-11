@@ -80,9 +80,7 @@ export default function PhotoWall() {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Photo Wall</h2>
-
+    <div className="p-4 w-full max-w-4xl mx-auto mb-8">
       {loading && <div className="text-sm text-gray-500">Loading photos…</div>}
       {error && <div className="text-sm text-red-600">Error: {error}</div>}
       {!loading && !error && photos.length === 0 && (
