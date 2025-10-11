@@ -22,7 +22,7 @@ export default function Upload() {
 
   return (
     <section className="mb-8">
-      <div className="mx-auto max-w-2xl rounded-2xl shadow-sm border border-gray-100 bg-white">
+      <div className="mx-auto max-w-2xl rounded-2xl shadow-md border border-gray-200 bg-white">
         <form onSubmit={handleSubmit} className="px-6 py-6 space-y-4">
           <div>
             <input
