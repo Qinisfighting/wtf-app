@@ -1,4 +1,5 @@
 import { Timestamp } from "@firebase/firestore";
+import type { User } from "firebase/auth";
 
 export type Photo = {
   id: string;
@@ -15,4 +16,10 @@ export type PhotoDoc = {
   originalName?: string;
   size?: number;
   type?: string;
+};
+
+export type AuthCtx = {
+  user: User | null;
+  loading: boolean;
+  logout: () => Promise<void>;
 };
