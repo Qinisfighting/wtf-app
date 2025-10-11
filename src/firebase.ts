@@ -1,12 +1,6 @@
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  //   setPersistence,
-  //   browserLocalPersistence,
-  //   signInAnonymously,
-  //   type UserCredential,
-} from "firebase/auth";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -25,17 +19,17 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-export const photosCollection = collection(db, "photos");
+// export const photosCollection = collection(db, "photos");
 
-// Example function to fetch photos (you can modify as needed)
-export async function fetchPhotos() {
-  const querySnapshot = await getDocs(photosCollection);
-  const photos = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  return photos;
-}
+// // Example function to fetch photos (you can modify as needed)
+// export async function fetchPhotos() {
+//   const querySnapshot = await getDocs(photosCollection);
+//   const photos = querySnapshot.docs.map((doc) => ({
+//     id: doc.id,
+//     ...doc.data(),
+//   }));
+//   return photos;
+// }
 
 // ✅ Ensure persistence + (anon) auth is ready BEFORE any reads
 // const authReady: Promise<UserCredential | void> = setPersistence(
