@@ -25,18 +25,6 @@ import {
 import { db, storage } from "../firebase";
 import { type PhotoDoc } from "../types";
 
-// export type PhotoDoc = {
-//   id: string;
-//   url: string;
-//   createdAt: Timestamp | null;
-//   uid?: string;
-//   storagePath?: string;
-//   originalName?: string;
-//   size?: number;
-//   type?: string;
-// };
-
-/** Existing upload — unchanged */
 export async function uploadPhoto(file: File, userId: string | undefined) {
   const uid = userId ?? "anonymous";
   const ext = file.name.split(".").pop() ?? "bin";

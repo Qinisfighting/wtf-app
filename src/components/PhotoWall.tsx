@@ -116,13 +116,15 @@ export default function PhotoWall() {
                 disabled={isDeleting}
                 aria-label="Delete photo"
                 className="
-                  absolute top-2 right-2
-                  rounded-md px-2 py-1 text-sm
-                  bg-white/90 shadow border
-                  opacity-0 group-hover:opacity-100
-                  transition-opacity
-                  disabled:opacity-60
-                "
+                            absolute top-2 right-2 z-10
+                            rounded-md p-0.5 text-sm border shadow
+                            bg-white/90
+                            opacity-100
+                            sm:opacity-0 sm:group-hover:opacity-100
+                            group-focus-within:opacity-100 focus:opacity-100 active:opacity-100
+                            transition-opacity
+                            disabled:opacity-60
+                          "
                 title={isDeleting ? "Deleting…" : "Delete"}
               >
                 🗑️
