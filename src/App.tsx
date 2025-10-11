@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
-// import PhotoWall from "./components/PhotoWall";
+import PhotoWall from "./components/PhotoWall";
 import Upload from "./components/Upload";
 import AuthProvider from "./auth/AuthProvider";
 import { useAuth } from "./auth/useAuth";
@@ -30,7 +30,7 @@ function MainArea() {
           <Logout />
         </div>
         <Upload />
-        {/* <PhotoWall /> */}
+        <PhotoWall />
       </div>
     </div>
   );
