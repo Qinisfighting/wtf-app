@@ -23,3 +23,12 @@ export type AuthCtx = {
   loading: boolean;
   logout: () => Promise<void>;
 };
+
+export type LightboxProps = {
+  open: boolean;
+  photos: { url: string; id: string }[];
+  index: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+};
