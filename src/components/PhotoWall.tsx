@@ -101,7 +101,9 @@ export default function PhotoWall() {
 
   return (
     <div className="p-4 w-full max-w-5xl mx-auto mb-8">
-      <h2 className="text-xl font-semibold mb-4">Photo Wall</h2>
+      <h2 className="font-kirang text-3xl font-light text-left ml-4 text-stone-600 mb-4">
+        what the . . . ?
+      </h2>
 
       {loading && <div className="text-sm text-gray-500">Loading photos…</div>}
       {error && <div className="text-sm text-red-600">Error: {error}</div>}
@@ -138,7 +140,7 @@ export default function PhotoWall() {
                 aria-label="Delete photo"
                 className="
                   absolute top-2 right-2 z-20
-                  rounded-md p-1 text-sm border shadow bg-white/90
+                  border-0 bg-none
                   opacity-100
                   sm:opacity-0 sm:group-hover:opacity-100
                   group-focus-within:opacity-100 focus:opacity-100 active:opacity-100
@@ -146,7 +148,18 @@ export default function PhotoWall() {
                 "
                 title={isDeleting ? "Deleting…" : "Delete"}
               >
-                🗑️
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={24}
+                  height={24}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="#fff"
+                    fillRule="evenodd"
+                    d="m6.774 6.4l.812 13.648a.8.8 0 0 0 .798.752h7.232a.8.8 0 0 0 .798-.752L17.226 6.4h1.203l-.817 13.719A2 2 0 0 1 15.616 22H8.384a2 2 0 0 1-1.996-1.881L5.571 6.4zM9.5 9h1.2l.5 9H10zm3.8 0h1.2l-.5 9h-1.2zM4.459 2.353l15.757 2.778a.5.5 0 0 1 .406.58L20.5 6.4L3.758 3.448l.122-.69a.5.5 0 0 1 .579-.405m6.29-1.125l3.94.695a.5.5 0 0 1 .406.58l-.122.689l-4.924-.869l.122-.689a.5.5 0 0 1 .579-.406z"
+                  ></path>
+                </svg>
               </button>
 
               {p.createdAt && (
@@ -241,7 +254,7 @@ function Lightbox({
 
       {/* Content */}
       <div
-        className="relative z-[101] max-w-[95vw] max-h-[90vh] w-full flex items-center justify-center p-2"
+        className="relative z-[101] max-w-[92vw] max-h-[90vh] w-full flex items-center justify-center"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -249,7 +262,7 @@ function Lightbox({
         <img
           src={current.url}
           alt=""
-          className="w-full h-full object-contain select-none shadow-lg lg:max-h-[80vh]"
+          className="w-full h-full object-contain select-none  lg:max-h-[80vh]"
           draggable={false}
         />
 
@@ -257,9 +270,21 @@ function Lightbox({
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-6 right-6 rounded-md  p-1 text-sm bg-white/90 border shadow hover:bg-white"
+          className="absolute top-6 right-6  border-0 bg-none cursor:pointer"
         >
-          ✖
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={14}
+            height={14}
+            viewBox="0 0 14 14"
+          >
+            <path
+              fill="#fff"
+              fillRule="evenodd"
+              d="M1.707.293A1 1 0 0 0 .293 1.707L5.586 7L.293 12.293a1 1 0 1 0 1.414 1.414L7 8.414l5.293 5.293a1 1 0 0 0 1.414-1.414L8.414 7l5.293-5.293A1 1 0 0 0 12.293.293L7 5.586z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
         </button>
 
         {/* Prev / Next arrows (hidden if only one image) */}
@@ -268,16 +293,37 @@ function Lightbox({
             <button
               onClick={onPrev}
               aria-label="Previous"
-              className="font-bold absolute left-4 top-1/2 -translate-y-1/2 rounded-full px-2 py-1 bg-white/90 border shadow hover:bg-white"
+              className="absolute left-6 top-1/2 -translate-y-1/2  border-0 bg-none cursor:pointer"
             >
-              ‹
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={20}
+                height={20}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#fff"
+                  d="M12.727 3.687a1 1 0 1 0-1.454-1.374l-8.5 9a1 1 0 0 0 0 1.374l8.5 9.001a1 1 0 1 0 1.454-1.373L4.875 12z"
+                ></path>
+              </svg>
             </button>
             <button
               onClick={onNext}
               aria-label="Next"
-              className="font-bold absolute right-4 top-1/2 -translate-y-1/2 rounded-full px-2 py-1 bg-white/90 border shadow hover:bg-white"
+              className="absolute right-6 top-1/2 -translate-y-1/2  border-0 bg-none cursor:pointer"
             >
-              ›
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={20}
+                height={20}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#fff"
+                  transform="translate(24 0) scale(-1 1)"
+                  d="M12.727 3.687a1 1 0 1 0-1.454-1.374l-8.5 9a1 1 0 0 0 0 1.374l8.5 9.001a1 1 0 1 0 1.454-1.373L4.875 12z"
+                />
+              </svg>
             </button>
           </>
         )}
