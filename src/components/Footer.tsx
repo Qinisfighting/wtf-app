@@ -23,13 +23,13 @@ export default function Footer() {
       {isTop && (
         <img
           src={upArrow}
-          className="w-8 z-20 fixed bottom-10 right-10 xl:right-17 xl:bottom-17 drop-shadow-lg hover:-translate-y-1"
+          className="w-10 z-40 fixed bottom-8 right-10 xl:right-17 xl:bottom-17 drop-shadow-lg hover:-translate-y-1"
           onClick={goTop}
           alt="toTop"
         />
       )}
 
-      <h5 className="text-sm text-center w-fit h-fit bg-[#ddc783]  text-white mx-auto rounded-full py-0 px-4 drop-shadow-md hover:bg-[#F74211] transition duration-700 ease-in-out">
+      {/* <h5 className="text-sm text-center w-fit h-fit bg-[#ddc783]  text-white mx-auto rounded-full py-0 px-4 drop-shadow-md hover:bg-[#F74211] transition duration-700 ease-in-out">
         {" "}
         © {new Date().getFullYear()} by{" "}
         <a
@@ -39,7 +39,7 @@ export default function Footer() {
         >
           QIN's code
         </a>
-      </h5>
+      </h5> */}
     </footer>
   );
 }

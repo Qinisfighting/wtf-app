@@ -35,7 +35,7 @@ export default function Upload() {
   }
 
   return (
-    <section className="mb-8">
+    <section className="mb-6  mt-2">
       <div className="mx-auto max-w-[350px] rounded-2xl shadow-md border border-gray-200 bg-white">
         <form onSubmit={handleSubmit} className="px-6 py-6 space-y-4">
           <div>

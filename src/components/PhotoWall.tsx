@@ -11,6 +11,7 @@ import {
 import { deleteObject, ref as storageRef } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { type Photo, type LightboxProps } from "../types";
+import Logout from "./Logout";
 
 export default function PhotoWall() {
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -101,10 +102,17 @@ export default function PhotoWall() {
   );
 
   return (
-    <div className="p-4 w-full max-w-5xl mx-auto mb-8">
-      <h2 className="font-kirang text-3xl font-light text-left ml-4 text-stone-600 mb-4">
-        what the . . . ?
-      </h2>
+    <div className="p-4 w-full max-w-5xl mx-auto mb-16 mt-2">
+      <div className="flex items-center justify-between relative ">
+        <h2 className="font-kirang text-3xl font-light text-left ml-4 text-stone-600 mb-4">
+          what the . . . ?
+        </h2>
+        <Logout
+          className="absolute -top-4 right-4"
+          size={28}
+          title="Sign out"
+        />
+      </div>
 
       {loading && <div className="text-sm text-gray-500">Loading photos…</div>}
       {error && <div className="text-sm text-red-600">Error: {error}</div>}

@@ -32,7 +32,7 @@ export default function Logout({
       type="button"
       onClick={handleClick}
       disabled={!canClick}
-      className={`mx-auto my-6 cursor-pointer rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed hover:translate-x-1 ${className}`}
+      className={`mx-auto mt-4 -mb-8 cursor-pointer rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed hover:translate-x-1 ${className}`}
       aria-label={title}
       title={title}
     >

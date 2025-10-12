@@ -1,9 +1,8 @@
 // src/App.tsx
 import "./App.css";
 import Header from "./components/Header";
-// import Footer from "./components/Footer";
+import Footer from "./components/Footer";
 import Login from "./components/Login";
-import Logout from "./components/Logout";
 import PhotoWall from "./components/PhotoWall";
 import Upload from "./components/Upload";
 import AuthProvider from "./auth/AuthProvider";
@@ -15,7 +14,7 @@ function MainArea() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-16">
-        <span>Loading…</span>
+        <div className="spinner" aria-hidden="true" />
       </div>
     );
   }
@@ -40,8 +39,7 @@ export default function App() {
         <main className="flex justify-center items-center py-8">
           <MainArea />
         </main>
-        <Logout />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </AuthProvider>
   );
