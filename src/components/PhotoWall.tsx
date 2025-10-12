@@ -114,11 +114,6 @@ export default function PhotoWall() {
         />
       </div>
 
-      {loading && (
-        <div className="flex justify-center items-center py-16">
-          <div className="spinner" aria-hidden="true" />
-        </div>
-      )}
       {error && <div className="text-sm text-red-600">Error: {error}</div>}
       {!loading && !error && photos.length === 0 && (
         <div className="text-sm text-gray-500">No photos yet.</div>
