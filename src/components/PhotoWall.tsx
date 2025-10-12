@@ -115,8 +115,7 @@ export default function PhotoWall() {
       </div>
 
       {loading && (
-        <div className="text-sm text-gray-500">
-          {" "}
+        <div className="flex justify-center items-center py-16">
           <div className="spinner" aria-hidden="true" />
         </div>
       )}
