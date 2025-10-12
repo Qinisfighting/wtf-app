@@ -23,7 +23,7 @@ export default function Footer() {
       {isTop && (
         <img
           src={upArrow}
-          className="w-12 z-40 fixed bottom-8 right-10 xl:right-17 xl:bottom-17 drop-shadow-lg hover:-translate-y-1"
+          className="w-10 z-40 fixed bottom-8 right-10 xl:right-17 xl:bottom-17 drop-shadow-lg hover:-translate-y-1"
           onClick={goTop}
           alt="toTop"
         />

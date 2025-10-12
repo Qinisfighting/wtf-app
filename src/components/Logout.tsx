@@ -10,7 +10,7 @@ type Props = {
 
 export default function Logout({
   className = "",
-  size = 32,
+  size = 34,
   title = "Sign out",
 }: Props) {
   const { user, loading, logout } = useAuth();
