@@ -42,6 +42,7 @@ export default function PhotoWall() {
             id: d.id,
             url: data.url,
             createdAt: data.createdAt ?? null,
+            variants: data.variants ?? undefined, // Ensure variants is present
           };
         });
         setPhotos(items);
@@ -224,13 +225,11 @@ function Lightbox({
 
   useEffect(() => {
     if (!open || photos.length < 2) return;
-
-    const target = 1200; // match your lightbox target CSS width
     const nextIdx = (index + 1) % photos.length;
     const prevIdx = (index - 1 + photos.length) % photos.length;
 
     const urls = [photos[nextIdx], photos[prevIdx]]
-      .map((p) => (p ? pickBestLightboxSrc(p, target) : null))
+      .map((p) => p?.variants?.w1024 ?? p?.url)
       .filter(Boolean) as string[];
 
     const imgs = urls.map((u) => {
@@ -239,11 +238,7 @@ function Lightbox({
       i.src = u;
       return i;
     });
-
-    return () => {
-      // allow GC if user quickly navigates away
-      imgs.forEach((i) => (i.src = ""));
-    };
+    return () => imgs.forEach((i) => (i.src = "")); // allow GC
   }, [open, index, photos]);
 
   // Basic swipe detection

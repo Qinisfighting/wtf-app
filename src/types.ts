@@ -22,6 +22,12 @@ export type PhotoDoc = {
   originalName?: string;
   size?: number;
   type?: string;
+  variants?: {
+    w320?: string;
+    w640?: string;
+    w1024?: string;
+    w1600?: string;
+  };
 };
 
 export type AuthCtx = {
@@ -32,7 +38,16 @@ export type AuthCtx = {
 
 export type LightboxProps = {
   open: boolean;
-  photos: { url: string; id: string }[];
+  photos: {
+    variants?: {
+      w320?: string;
+      w640?: string;
+      w1024?: string;
+      w1600?: string;
+    };
+    url: string;
+    id: string;
+  }[];
   index: number;
   onClose: () => void;
   onPrev: () => void;
