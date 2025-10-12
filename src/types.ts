@@ -4,6 +4,12 @@ import type { User } from "firebase/auth";
 export type Photo = {
   id: string;
   url: string;
+  variants?: {
+    w320?: string;
+    w640?: string;
+    w1024?: string;
+    w1600?: string;
+  };
   createdAt?: Timestamp | null;
 };
 

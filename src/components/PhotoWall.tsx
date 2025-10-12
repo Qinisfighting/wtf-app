@@ -127,10 +127,20 @@ export default function PhotoWall() {
               onClick={() => openLightboxAt(idx)}
             >
               <img
-                src={p.url}
-                alt="Uploaded"
-                className="relative z-0 w-full h-44 sm:h-56 object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+                src={p.variants?.w640 ?? p.url}
+                srcSet={[
+                  p.variants?.w320 && `${p.variants.w320} 320w`,
+                  p.variants?.w640 && `${p.variants.w640} 640w`,
+                  p.variants?.w1024 && `${p.variants.w1024} 1024w`,
+                ]
+                  .filter(Boolean)
+                  .join(", ")}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+                width={200}
+                height={176} // reserve space; tune to your tile aspect
+                className="w-full h-44 sm:h-56 object-cover"
                 loading="lazy"
+                decoding="async"
               />
 
               <button
@@ -212,6 +222,30 @@ function Lightbox({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose, onNext, onPrev]);
 
+  useEffect(() => {
+    if (!open || photos.length < 2) return;
+
+    const target = 1200; // match your lightbox target CSS width
+    const nextIdx = (index + 1) % photos.length;
+    const prevIdx = (index - 1 + photos.length) % photos.length;
+
+    const urls = [photos[nextIdx], photos[prevIdx]]
+      .map((p) => (p ? pickBestLightboxSrc(p, target) : null))
+      .filter(Boolean) as string[];
+
+    const imgs = urls.map((u) => {
+      const i = new Image();
+      i.decoding = "async";
+      i.src = u;
+      return i;
+    });
+
+    return () => {
+      // allow GC if user quickly navigates away
+      imgs.forEach((i) => (i.src = ""));
+    };
+  }, [open, index, photos]);
+
   // Basic swipe detection
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
@@ -239,6 +273,9 @@ function Lightbox({
 
   if (!open || !current) return null;
 
+  const srcSet = buildSrcSet(current);
+  const src = pickBestLightboxSrc(current, /* targetMaxCssPx */ 1200);
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
@@ -260,9 +297,13 @@ function Lightbox({
       >
         {/* Image */}
         <img
-          src={current.url}
+          src={src}
+          srcSet={srcSet}
+          sizes="(max-width: 640px) 90vw, (max-width: 1024px) 90vw, 80vw"
           alt=""
-          className="w-full h-full object-contain select-none  lg:max-h-[80vh]"
+          className="w-full h-full object-contain select-none lg:max-h-[80vh]"
+          loading="eager"
+          decoding="async"
           draggable={false}
         />
 
@@ -330,4 +371,37 @@ function Lightbox({
       </div>
     </div>
   );
+}
+
+function buildSrcSet(p: Photo): string | undefined {
+  if (!p.variants) return undefined;
+  const parts: string[] = [];
+  if (p.variants.w320) parts.push(`${p.variants.w320} 320w`);
+  if (p.variants.w640) parts.push(`${p.variants.w640} 640w`);
+  if (p.variants.w1024) parts.push(`${p.variants.w1024} 1024w`);
+  if (p.variants.w1600) parts.push(`${p.variants.w1600} 1600w`);
+  return parts.length ? parts.join(", ") : undefined;
+}
+
+/**
+ * Pick a good default src for the lightbox image. We aim for ~targetMaxPx
+ * (e.g., 1200–1600) after accounting for device pixel ratio.
+ */
+function pickBestLightboxSrc(p: Photo, targetMaxCssPx = 1200): string {
+  const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+  const needed = Math.round(targetMaxCssPx * dpr);
+
+  const candidates: Array<{ w: number; url?: string }> = [
+    { w: 320, url: p.variants?.w320 },
+    { w: 640, url: p.variants?.w640 },
+    { w: 1024, url: p.variants?.w1024 },
+    { w: 1600, url: p.variants?.w1600 },
+  ].filter((x) => !!x.url) as Array<{ w: number; url: string }>;
+
+  if (!candidates.length) return p.url; // fallback to original
+
+  // Choose the smallest variant that is >= needed; otherwise, take the largest available.
+  const sorted = candidates.sort((a, b) => a.w - b.w);
+  const exactOrAbove = sorted.find((c) => c.w >= needed);
+  return (exactOrAbove ?? sorted[sorted.length - 1]).url ?? p.url;
 }
