@@ -52,6 +52,52 @@ function detectExt(file: File): string {
   return "bin";
 }
 
+/**
+ * Resize + compress an image client-side before upload.
+ * Caps the longest edge at `maxPx` and re-encodes as WebP (quality 0.85).
+ * Falls back to the original file if the browser doesn't support it.
+ */
+export async function compressImage(file: File, maxPx = 1600): Promise<File> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+
+      const { naturalWidth: w, naturalHeight: h } = img;
+      const scale = Math.min(1, maxPx / Math.max(w, h));
+      const tw = Math.round(w * scale);
+      const th = Math.round(h * scale);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = tw;
+      canvas.height = th;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return resolve(file);
+
+      ctx.drawImage(img, 0, 0, tw, th);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) return resolve(file);
+          const name = file.name.replace(/\.[^.]+$/, ".webp");
+          resolve(new File([blob], name, { type: "image/webp" }));
+        },
+        "image/webp",
+        0.85
+      );
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(file); // fall back to original
+    };
+
+    img.src = objectUrl;
+  });
+}
+
 /** Upload a photo with long-lived, immutable cache headers. */
 export async function uploadPhoto(file: File, userId: string | undefined) {
   const uid = userId ?? "anonymous";

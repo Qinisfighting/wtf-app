@@ -145,9 +145,10 @@ export default function PhotoWall() {
                   .join(", ")}
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
                 width={200}
-                height={176} // reserve space; tune to your tile aspect
+                height={176}
                 className="w-full h-44 sm:h-56 object-cover"
-                loading="lazy"
+                loading={idx < 6 ? "eager" : "lazy"}
+                fetchPriority={idx < 3 ? "high" : "auto"}
                 decoding="async"
               />
 

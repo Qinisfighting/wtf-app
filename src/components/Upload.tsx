@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import type { FormEvent } from "react";
 import { useAuth } from "../auth/useAuth";
-import { uploadPhoto } from "../services/photos";
+import { uploadPhoto, compressImage } from "../services/photos";
 
 export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
@@ -21,7 +21,8 @@ export default function Upload() {
     setUploadedUrl(null);
 
     try {
-      const { url } = await uploadPhoto(file, user?.uid);
+      const compressed = await compressImage(file);
+      const { url } = await uploadPhoto(compressed, user?.uid);
       setUploadedUrl(url);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
