@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   collection,
   deleteDoc,
@@ -18,6 +18,10 @@ export default function PhotoWall() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
+
+  // Filter state
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
   // Lightbox state
   const [isLightboxOpen, setLightboxOpen] = useState(false);
@@ -83,6 +87,41 @@ export default function PhotoWall() {
     }
   }
 
+  const availableYears = useMemo(() => {
+    const years = new Set<number>();
+    photos.forEach((p) => {
+      if (p.createdAt) years.add(p.createdAt.toDate().getFullYear());
+    });
+    return Array.from(years).sort((a, b) => b - a);
+  }, [photos]);
+
+  const availableMonths = useMemo(() => {
+    const months = new Set<number>();
+    photos.forEach((p) => {
+      if (!p.createdAt) return;
+      const d = p.createdAt.toDate();
+      if (selectedYear === null || d.getFullYear() === selectedYear) {
+        months.add(d.getMonth());
+      }
+    });
+    return Array.from(months).sort((a, b) => a - b);
+  }, [photos, selectedYear]);
+
+  const filteredPhotos = useMemo(() => {
+    return photos.filter((p) => {
+      if (!p.createdAt) return selectedYear === null && selectedMonth === null;
+      const d = p.createdAt.toDate();
+      if (selectedYear !== null && d.getFullYear() !== selectedYear) return false;
+      if (selectedMonth !== null && d.getMonth() !== selectedMonth) return false;
+      return true;
+    });
+  }, [photos, selectedYear, selectedMonth]);
+
+  const handleYearChange = (year: number | null) => {
+    setSelectedYear(year);
+    setSelectedMonth(null);
+  };
+
   const openLightboxAt = useCallback((index: number) => {
     setActiveIndex(index);
     setLightboxOpen(true);
@@ -90,15 +129,15 @@ export default function PhotoWall() {
 
   const closeLightbox = useCallback(() => setLightboxOpen(false), []);
   const next = useCallback(
-    () => setActiveIndex((i) => (photos.length ? (i + 1) % photos.length : i)),
-    [photos.length]
+    () => setActiveIndex((i) => (filteredPhotos.length ? (i + 1) % filteredPhotos.length : i)),
+    [filteredPhotos.length]
   );
   const prev = useCallback(
     () =>
       setActiveIndex((i) =>
-        photos.length ? (i - 1 + photos.length) % photos.length : i
+        filteredPhotos.length ? (i - 1 + filteredPhotos.length) % filteredPhotos.length : i
       ),
-    [photos.length]
+    [filteredPhotos.length]
   );
 
   return (
@@ -119,6 +158,32 @@ export default function PhotoWall() {
         <div className="text-sm text-gray-500">No photos yet.</div>
       )}
 
+      <div className="flex gap-2 mb-4 ml-4">
+        <select
+          value={selectedYear ?? ""}
+          onChange={(e) => handleYearChange(e.target.value ? Number(e.target.value) : null)}
+          className="text-sm rounded-md border border-gray-300 px-2 py-1 bg-white text-stone-600"
+        >
+          <option value="">Alle Jahre</option>
+          {availableYears.map((y) => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
+
+        <select
+          value={selectedMonth ?? ""}
+          onChange={(e) => setSelectedMonth(e.target.value !== "" ? Number(e.target.value) : null)}
+          className="text-sm rounded-md border border-gray-300 px-2 py-1 bg-white text-stone-600"
+        >
+          <option value="">Alle Monate</option>
+          {availableMonths.map((m) => (
+            <option key={m} value={m}>
+              {new Date(2000, m).toLocaleString("default", { month: "long" })}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div
         className="
           grid gap-3
@@ -126,7 +191,7 @@ export default function PhotoWall() {
           sm:[grid-template-columns:repeat(auto-fill,minmax(200px,1fr))]
         "
       >
-        {photos.map((p, idx) => {
+        {filteredPhotos.map((p, idx) => {
           const isDeleting = deletingIds.has(p.id);
           return (
             <figure
@@ -194,7 +259,7 @@ export default function PhotoWall() {
       {/* Lightbox */}
       <Lightbox
         open={isLightboxOpen}
-        photos={photos}
+        photos={filteredPhotos}
         index={activeIndex}
         onClose={closeLightbox}
         onPrev={prev}
